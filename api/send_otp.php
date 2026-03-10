@@ -45,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
         $mail->Password   = 'oyrwoartyhssjjww';    // App Password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
         $mail->Port       = 587;
-
         $mail->setFrom('webproject.ajm.noreply@gmail.com', 'Event Check-in System');
         $mail->addAddress($userEmail);
         $mail->isHTML(true);
