@@ -163,6 +163,9 @@ $registrations = getRegistrationsByEvent($event_id);
         <a href="/entrypj/templates/statistics.php?event_id=<?php echo $event_id; ?>" style="display: inline-block; margin-bottom: 20px; margin-left: 15px; text-decoration: none; background: #9b59b6; color: white; padding: 5px 15px; border-radius: 5px; font-weight: bold;">
             📊 ดูสถิติกิจกรรมนี้
         </a>
+        <a href="/entrypj/templates/event_checkin.php?event_id=<?php echo $event_id; ?>" style="display: inline-block; margin-bottom: 20px; margin-left: 15px; text-decoration: none; background: #e67e22; color: white; padding: 5px 15px; border-radius: 5px; font-weight: bold;">
+            📍 ไปหน้าเช็คชื่อเข้างาน
+        </a>
         <h2>👥 ผู้ลงทะเบียน: <?php echo htmlspecialchars($event['event_name']); ?></h2>
 
         <table>

@@ -15,20 +15,63 @@ $registrations = getRegistrationsByEvent($event_id);
 
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <title>ระบบเช็คชื่อเข้างาน</title>
     <style>
-        body { font-family: sans-serif; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
-        th { background-color: #f2f2f2; }
-        .btn-checkin { background-color: #2ecc71; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        .btn-checkin:hover { background-color: #27ae60; }
-        .btn-undo { background-color: #95a5a6; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px; }
-        .status-badge { background-color: #dff9fb; color: #22a6b3; padding: 5px 10px; border-radius: 20px; font-size: 0.9em; }
+        body {
+            font-family: sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btn-checkin {
+            background-color: #2ecc71;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .btn-checkin:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-undo {
+            background-color: #95a5a6;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .status-badge {
+            background-color: #dff9fb;
+            color: #22a6b3;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
     </style>
 </head>
+
 <body>
 
     <h2>📍 ระบบเช็คชื่อหน้างาน: <?php echo htmlspecialchars($event['event_name']); ?></h2>
@@ -45,41 +88,49 @@ $registrations = getRegistrationsByEvent($event_id);
             </tr>
         </thead>
         <tbody>
-            <?php 
+            <?php
             $has_approved_users = false;
-            if (!empty($registrations)): 
-                foreach ($registrations as $reg): 
-                    if ($reg['status'] == 'Approved'): 
+            if (!empty($registrations)):
+                foreach ($registrations as $reg):
+                    if ($reg['status'] == 'Approved'):
                         $has_approved_users = true;
             ?>
-                <tr>
-                    <td>#<?php echo $reg['registration_id']; ?></td>
-                    <td style="text-align: left; font-weight: bold;"><?php echo htmlspecialchars($reg['name']); ?></td>
-                    <td><?php echo htmlspecialchars($reg['email']); ?></td>
-                    
-                    <td>
-                        <?php if ($reg['is_checked_in'] == 1): ?>
-                            <span class="status-badge" style="background-color: #badc58; color: #2f3640;">✅ เข้าร่วมแล้ว</span>
-                        <?php else: ?>
-                            <span class="status-badge" style="background-color: #ffbe76; color: #2f3640;">⏳ รอเช็คอิน</span>
-                        <?php endif; ?>
-                    </td>
-                    
-                    <td>
-                        <?php if ($reg['is_checked_in'] == 0): ?>
-                            <a class="btn-checkin" href="/entrypj/routes/Registration.php?action=checkin&id=<?php echo $reg['registration_id']; ?>&event_id=<?php echo $event_id; ?>">👉 เช็คชื่อเข้างาน</a>
-                        <?php else: ?>
-                            <a class="btn-undo" href="/entrypj/routes/Registration.php?action=undo_checkin&id=<?php echo $reg['registration_id']; ?>&event_id=<?php echo $event_id; ?>">ยกเลิก</a>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php 
+                        <tr>
+                            <td>#<?php echo $reg['registration_id']; ?></td>
+                            <td style="text-align: left; font-weight: bold;"><?php echo htmlspecialchars($reg['name']); ?></td>
+                            <td><?php echo htmlspecialchars($reg['email']); ?></td>
+
+                            <td>
+                                <?php if ($reg['is_checked_in'] == 1): ?>
+                                    <span class="status-badge" style="background-color: #badc58; color: #2f3640;">✅ เข้าร่วมแล้ว</span>
+                                <?php else: ?>
+                                    <span class="status-badge" style="background-color: #ffbe76; color: #2f3640;">⏳ รอเช็คอิน</span>
+                                <?php endif; ?>
+                            </td>
+
+                            <td>
+                                <?php if ($reg['is_checked_in'] == 0): ?>
+                                    <form action="/entrypj/routes/Registration.php" method="POST" style="display: flex; gap: 5px; justify-content: center; align-items: center; margin: 0;">
+                                        <input type="hidden" name="action" value="verify_checkin_otp">
+                                        <input type="hidden" name="registration_id" value="<?php echo $reg['registration_id']; ?>">
+                                        <input type="hidden" name="attendee_email" value="<?php echo htmlspecialchars($reg['email']); ?>">
+                                        <input type="hidden" name="event_id" value="<?php echo $event_id; ?>">
+
+                                        <input type="text" name="otp" placeholder="รหัส 6 หลัก" maxlength="6" required style="width: 90px; text-align: center; border: 1px solid #ccc; border-radius: 4px; padding: 6px;">
+                                        <button type="submit" class="btn-checkin" style="border: none; cursor: pointer;">ยืนยัน</button>
+                                    </form>
+                                <?php else: ?>
+                                    <a class="btn-undo" href="/entrypj/routes/Registration.php?action=undo_checkin&id=<?php echo $reg['registration_id']; ?>&event_id=<?php echo $event_id; ?>">ยกเลิก</a>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                <?php
                     endif;
-                endforeach; 
-            endif; 
-            
+                endforeach;
+            endif;
+
             if (!$has_approved_users):
-            ?>
+                ?>
                 <tr>
                     <td colspan="5">ยังไม่มีผู้เข้าร่วมที่ได้รับการอนุมัติในกิจกรรมนี้</td>
                 </tr>
@@ -88,4 +139,5 @@ $registrations = getRegistrationsByEvent($event_id);
     </table>
 
 </body>
+
 </html>

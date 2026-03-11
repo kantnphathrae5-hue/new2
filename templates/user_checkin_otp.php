@@ -93,7 +93,7 @@ $stmt->close();
         .then(data => {
             if(data.status === 'success') {
                 msg.style.color = "green";
-                msg.innerText = "ส่งรหัส OTP ไปที่อีเมลแล้ว! (รหัสมีอายุ 5 นาที)";
+                msg.innerText = "ส่งรหัส OTP ไปที่อีเมลแล้ว! นำรหัสไปแจ้งผู้จัดงานเพื่อเช็คอิน";
                 btn.innerText = "ส่งสำเร็จแล้ว";
                 
                 setTimeout(() => {
