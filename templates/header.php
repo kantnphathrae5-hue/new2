@@ -12,9 +12,6 @@
 
             <a href="/entrypj/templates/history.php" style="text-decoration: none; color: black;">📜 ประวัติการเข้าร่วม</a> &nbsp;|&nbsp;
             <a href="/entrypj/templates/manage_event.php" style="text-decoration: none; color: black;">⚙️ จัดการกิจกรรม</a> &nbsp;|&nbsp;
-            <a href="/entrypj/templates/statistics.php" style="text-decoration: none; font-weight: bold; margin-right: 15px; color: #2c3e50;">
-                📊 ดูสถิติ
-            </a>
             <a href="/entrypj/routes/User.php?action=logout" style="text-decoration: none; color: #e74c3c;">🚪 ออกจากระบบ</a>
         </div>
 
